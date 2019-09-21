@@ -23,22 +23,26 @@ func main() {
 		return
 	}
 
-	for i := 0; i < 4; i++ {
-		fileName := fmt.Sprintf("0_%d.png", i)
+	for j := 0; j < 6; j++ {
+		for i := 0; i < 4; i++ {
+			fileName := fmt.Sprintf("%d_%d.png", j, i)
 
-		// remove the old icon
-		cmd = exec.Command("rm", fileName)
-		cmd.Run()
+			// remove the old icon
+			cmd = exec.Command("rm", fileName)
+			cmd.Run()
 
-		// Crop the image
-		cropArg := fmt.Sprintf("crop=150:150:%d:190", ((i+1) * 74.0) + (i * 150.0))
-		cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", cropArg, fileName)
-		var stderr bytes.Buffer
-		cmd.Stderr = &stderr
-		err := cmd.Run()
-		if err != nil {
-			fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-			return
+			// Crop the image
+			x := ((i+1) * 72.0) + (i * 150.0)
+			y := 190.0 + (j * 150.0) + (j * 172.0)
+			cropArg := fmt.Sprintf("crop=150:150:%d:%d", x, y)
+			cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", cropArg, fileName)
+			var stderr bytes.Buffer
+			cmd.Stderr = &stderr
+			err := cmd.Run()
+			if err != nil {
+				fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+				return
+			}
 		}
 	}
 
