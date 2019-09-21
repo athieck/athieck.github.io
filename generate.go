@@ -31,7 +31,7 @@ func main() {
 		cmd.Run()
 
 		// Crop the image
-		cropArg := fmt.Sprintf("crop=150:150:%d:190", ((i+1) * 74.0))
+		cropArg := fmt.Sprintf("crop=150:150:%d:190", ((i+1) * 74.0) + (i * 150.0))
 		cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", cropArg, fileName)
 		var stderr bytes.Buffer
 		cmd.Stderr = &stderr
