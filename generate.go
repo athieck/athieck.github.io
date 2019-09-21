@@ -23,33 +23,23 @@ func main() {
 		return
 	}
 
-	// cmd = exec.Command("rm", "wallpaper_scaled_cropped.png")
-	// if err := cmd.Run(); err != nil {
-	// 	fmt.Printf("could not remove old scaled cropped wallpaper: %+q\n", err)
-	// }
+	for i := 0; i < 4; i++ {
+		fileName := fmt.Sprintf("0_%d.png", i)
 
-	// // center crop
-	// cropArg := fmt.Sprintf("crop=%f:%f:%f:%f", baseWidth, baseHeight, ((zoom - 1.0) / 2.0) * baseWidth, ((zoom - 1.0) / 2.0) * baseHeight)
-	// cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", cropArg, "wallpaper_scaled_cropped.png")
-	// var stderrCC bytes.Buffer
-	// cmd.Stderr = &stderrCC
-	// if err := cmd.Run(); err != nil {
-	// 	fmt.Println(fmt.Sprint(err) + ": " + stderrCC.String())
-	// 	return
-	// }
+		// remove the old icon
+		cmd = exec.Command("rm", fileName)
+		cmd.Run()
 
-	// remove the old icon
-	cmd = exec.Command("rm", "0_0.png")
-	cmd.Run()
-
-	// Crop the image
-	cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", "crop=150:150:74:190", "0_0.png")
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-		return
+		// Crop the image
+		cropArg := fmt.Sprintf("crop=150:150:%d:190", ((i+1) * 74.0))
+		cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", cropArg, fileName)
+		var stderr bytes.Buffer
+		cmd.Stderr = &stderr
+		err := cmd.Run()
+		if err != nil {
+			fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+			return
+		}
 	}
 
 	fmt.Printf("finished!\n")
