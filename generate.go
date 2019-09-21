@@ -12,7 +12,7 @@ func main() {
 		fmt.Printf("could not remove\n")
 		return
 	}
-	cmd = exec.Command("ffmpeg", "-i", "wallpaper2.png", "-vf", "crop=150:150:160:240", "0_0.png")
+	cmd = exec.Command("ffmpeg", "-i", "wallpaper2.png", "-vf", "crop=150:150:160:230", "0_0.png")
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	err := cmd.Run()
