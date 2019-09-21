@@ -43,7 +43,7 @@ func main() {
 	cmd.Run()
 
 	// Crop the image
-	cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", "crop=150:150:120:200", "0_0.png")
+	cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", "crop=150:150:80:180", "0_0.png")
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	err := cmd.Run()
