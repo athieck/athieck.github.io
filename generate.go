@@ -6,7 +6,7 @@ import (
 	"bytes"
 )
 
-const scale = 0.75
+const scale = 0.80
 const baseWidth = 1242.0
 const baseHeight = 2688.0
 
