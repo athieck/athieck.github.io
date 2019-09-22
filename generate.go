@@ -23,6 +23,27 @@ func main() {
 		return
 	}
 
+	// scale wallpaper down and then back up to reduce quality
+	cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled.png", "-vf", fmt.Sprintf("scale=%f:%f", scale * baseWidth / 2.0, scale * baseHeight / 2.0), "wallpaper_scaled_temp.png")
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("could not scale down wallpaper: %+q\n", err)
+		return
+	}
+
+	// remove the scaled wallpaper
+	cmd = exec.Command("rm", "wallpaper_scaled.png")
+	cmd.Run()
+
+	cmd = exec.Command("ffmpeg", "-i", "wallpaper_scaled_temp.png", "-vf", fmt.Sprintf("scale=%f:%f", scale * baseWidth, scale * baseHeight), "wallpaper_scaled.png")
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("could not scale wallpaper: %+q\n", err)
+		return
+	}
+
+	cmd = exec.Command("rm", "wallpaper_scaled_temp.png")
+	cmd.Run()
+
+	// create the icons
 	for j := 0; j < 6; j++ {
 		for i := 0; i < 4; i++ {
 			fileName := fmt.Sprintf("%d_%d.png", j, i)
